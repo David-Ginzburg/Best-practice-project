@@ -5,11 +5,14 @@ import {
 	SidebarGroup,
 	SidebarGroupContent,
 	SidebarGroupLabel,
+	SidebarHeader,
 	SidebarMenu,
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/shared/shadcn/ui/sidebar";
 import { TransitionLink } from "@/shared/components/transition-link/TransitionLink";
+import { ThemeToggle } from "@/shared/components/theme-toggle";
+import { TypographyLarge } from "@/shared/components/typography";
 import { menuItems } from "../model/const";
 
 export const LayoutSidebar = () => {
@@ -17,6 +20,10 @@ export const LayoutSidebar = () => {
 
 	return (
 		<Sidebar>
+			<SidebarHeader className="flex items-center justify-between px-4 py-2">
+				<TypographyLarge>Dashboard</TypographyLarge>
+				<ThemeToggle />
+			</SidebarHeader>
 			<SidebarContent>
 				<SidebarGroup>
 					<SidebarGroupLabel>Navigation</SidebarGroupLabel>

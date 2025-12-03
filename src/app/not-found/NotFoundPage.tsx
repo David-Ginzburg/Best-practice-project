@@ -2,6 +2,7 @@ import { Home, SearchX } from "lucide-react";
 import { Button } from "@/shared/shadcn/ui/button";
 import { PATHS } from "@/shared/paths";
 import { useTransitionNavigate } from "@/shared/hooks/use-transition-navigate";
+import { TypographyH1, TypographyH2, TypographyLead, TypographyMuted } from "@/shared/components/typography";
 
 export const NotFoundPage = () => {
 	const navigate = useTransitionNavigate();
@@ -20,21 +21,21 @@ export const NotFoundPage = () => {
 				</div>
 
 				{/* Large 404 number */}
-				<h1 className="mb-4 text-8xl font-bold tracking-tight text-foreground">
+				<TypographyH1 className="mb-4 text-8xl">
 					<span className="bg-linear-to-r from-primary to-primary/60 bg-clip-text text-transparent">
 						404
 					</span>
-				</h1>
+				</TypographyH1>
 
 				{/* Title */}
-				<h2 className="mb-3 text-3xl font-semibold tracking-tight text-foreground">
+				<TypographyH2 className="mb-3 border-none pb-0">
 					Page Not Found
-				</h2>
+				</TypographyH2>
 
 				{/* Description */}
-				<p className="mb-8 text-lg text-muted-foreground">
+				<TypographyLead className="mb-8">
 					Sorry, we couldn't find the page you're looking for. It may have been moved or deleted.
-				</p>
+				</TypographyLead>
 
 				{/* Action buttons */}
 				<div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
@@ -49,9 +50,9 @@ export const NotFoundPage = () => {
 
 				{/* Additional information */}
 				<div className="mt-12 pt-8 border-t border-border">
-					<p className="text-sm text-muted-foreground">
+					<TypographyMuted>
 						If you believe this is an error, please contact support.
-					</p>
+					</TypographyMuted>
 				</div>
 			</div>
 		</div>

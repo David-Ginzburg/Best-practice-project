@@ -118,3 +118,63 @@
 		@apply bg-background text-foreground;
 	}
 }
+
+/* Theme transition animation - expanding circle effect */
+:root {
+	--theme-transition-x: 0px;
+	--theme-transition-y: 0px;
+	--theme-transition-radius: 0px;
+}
+
+/* Theme transition animation - expanding circle effect */
+::view-transition-old(root),
+::view-transition-new(root) {
+	mix-blend-mode: normal;
+}
+
+/* Old view fades out with shrinking circle */
+::view-transition-old(root) {
+	z-index: 1;
+	animation: theme-circle-out 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* New view fades in with expanding circle */
+::view-transition-new(root) {
+	z-index: 9999;
+	animation: theme-circle-in 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Keyframes for theme transition - expanding circle effect */
+@keyframes theme-circle-out {
+	from {
+		clip-path: circle(
+			var(--theme-transition-radius) at var(--theme-transition-x) var(--theme-transition-y)
+		);
+		opacity: 1;
+	}
+	to {
+		clip-path: circle(0px at var(--theme-transition-x) var(--theme-transition-y));
+		opacity: 0;
+	}
+}
+
+@keyframes theme-circle-in {
+	from {
+		clip-path: circle(0px at var(--theme-transition-x) var(--theme-transition-y));
+		opacity: 0;
+	}
+	to {
+		clip-path: circle(
+			var(--theme-transition-radius) at var(--theme-transition-x) var(--theme-transition-y)
+		);
+		opacity: 1;
+	}
+}
+
+/* Ensure smooth background color transition */
+@supports (view-transition-name: none) {
+	::view-transition-group(root) {
+		animation-duration: 0.8s;
+		animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+	}
+}

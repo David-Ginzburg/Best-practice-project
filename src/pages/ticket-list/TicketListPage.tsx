@@ -1,9 +1,10 @@
 import { TicketList } from "./ui";
+import { TypographyH1 } from "@/shared/components/typography";
 
 export const TicketListPage = () => {
 	return (
 		<div className="container mx-auto py-8 px-4">
-			<h1 className="text-3xl font-bold mb-6">Ticket List</h1>
+			<TypographyH1 className="mb-6">Ticket List</TypographyH1>
 			<TicketList />
 		</div>
 	);
