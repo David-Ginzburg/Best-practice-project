@@ -1,8 +1,16 @@
-import { CreateTicketPage } from "@/pages/create-ticket";
-import { TicketListPage } from "@/pages/ticket-list";
+import { lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
+import { PATHS } from "@/shared/paths";
 import { Layout } from "../layout/Layout";
 import { NotFoundPage } from "../not-found/NotFoundPage";
+
+const TicketListPage = lazy(() =>
+	import("@/pages/ticket-list").then((module) => ({ default: module.TicketListPage }))
+);
+
+const CreateTicketPage = lazy(() =>
+	import("@/pages/create-ticket").then((module) => ({ default: module.CreateTicketPage }))
+);
 
 export const router = createBrowserRouter([
 	{
@@ -10,11 +18,11 @@ export const router = createBrowserRouter([
 		errorElement: <NotFoundPage />,
 		children: [
 			{
-				path: "/ticket-list",
+				path: PATHS.ticketList,
 				element: <TicketListPage />,
 			},
 			{
-				path: "/create-ticket",
+				path: PATHS.createTicket,
 				element: <CreateTicketPage />,
 			},
 		],

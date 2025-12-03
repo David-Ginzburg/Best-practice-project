@@ -1,7 +1,14 @@
 import type { Ticket } from "../model/types";
 import { TICKET_STATUSES, TICKET_PRIORITIES } from "../model/const";
 
-export const generateMockTickets = (): Ticket[] => {
+/**
+ * Generate mock tickets data
+ * @returns Promise that resolves after 1 second with mock tickets array
+ */
+export const getTickets = async (): Promise<Ticket[]> => {
+	// Simulate API delay
+	await new Promise((resolve) => setTimeout(resolve, 1000));
+
 	const statuses = TICKET_STATUSES;
 	const priorities = TICKET_PRIORITIES;
 	const assignees = [

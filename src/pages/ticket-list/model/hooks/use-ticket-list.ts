@@ -1,6 +1,6 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import type { Ticket, TicketStatus, TicketPriority } from "@/entities/ticket";
-import { generateMockTickets } from "@/entities/ticket";
+import { useTicketListQuery } from "@/entities/ticket";
 
 interface UseTicketListParams {
 	searchQuery: string;
@@ -13,10 +13,10 @@ export const useTicketList = ({
 	statusFilter,
 	priorityFilter,
 }: UseTicketListParams) => {
-	const [tickets] = useState<Ticket[]>(generateMockTickets());
+	const { data: tickets = [], isLoading } = useTicketListQuery();
 
 	const filteredTickets = useMemo(() => {
-		return tickets.filter((ticket) => {
+		return tickets.filter((ticket: Ticket) => {
 			const matchesSearch =
 				searchQuery === "" ||
 				ticket.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -31,6 +31,7 @@ export const useTicketList = ({
 	return {
 		tickets,
 		filteredTickets,
+		isLoading,
 	};
 };
 

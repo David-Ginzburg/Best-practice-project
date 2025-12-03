@@ -10,7 +10,7 @@ export const TicketList = () => {
 	const { params, setFilters, setPage } = useTicketListParams();
 	const { searchQuery, statusFilter, priorityFilter, page } = params;
 
-	const { tickets, filteredTickets } = useTicketList({
+	const { tickets, filteredTickets, isLoading } = useTicketList({
 		searchQuery,
 		statusFilter,
 		priorityFilter,
@@ -25,6 +25,15 @@ export const TicketList = () => {
 	const paginatedTickets = useMemo(() => {
 		return filteredTickets.slice(startIndex, endIndex);
 	}, [filteredTickets, startIndex, endIndex]);
+
+	if (isLoading) {
+		return (
+			<div className="space-y-4">
+				<div className="h-10 w-full animate-pulse rounded-md bg-muted" />
+				<div className="h-64 w-full animate-pulse rounded-md bg-muted" />
+			</div>
+		);
+	}
 
 	return (
 		<>
