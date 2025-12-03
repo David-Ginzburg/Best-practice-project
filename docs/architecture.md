@@ -7,11 +7,11 @@
 
 ## Recent Changes
 
-- Refactored pages according to Feature-Sliced Design architecture
-- Moved all business logic from components to hooks in features layer
+- Refactored to page-first approach in Feature-Sliced Design architecture
+- Reorganized ticket-list page structure according to FSD: model/hooks and ui folders
+- All business logic moved to model/hooks, UI components in ui folder
 - Created entities layer for ticket domain model
-- Created features layer with hooks for ticket list functionality
-- Created widgets layer for UI composition
+- Refactored ticket table to use DataTable (TanStack Table) with column configuration
 
 ## Feature-Sliced Design Structure
 
@@ -28,42 +28,56 @@ Business entities and domain models.
 - **Lib** (`/lib/`):
   - `status-utils.ts` - Utility functions for status and priority formatting (getStatusColor, getStatusLabel, getPriorityColor, getPriorityLabel)
 
-### Features Layer (`/src/features/`)
-
-Business logic hooks and feature-specific functionality.
-
-#### Ticket List Feature (`/src/features/ticket-list/`)
-
-- **Model** (`/model/`):
-  - `use-ticket-filters.ts` - Hook for managing ticket filters using react-hook-form
-  - `use-ticket-list.ts` - Hook for filtering and managing ticket list
-  - `use-ticket-pagination.ts` - Hook for pagination logic
-
-### Widgets Layer (`/src/widgets/`)
-
-Composition of features and entities into reusable UI blocks.
-
-#### Ticket List Widget (`/src/widgets/ticket-list/`)
-
-- **UI** (`/ui/`):
-  - `ticket-filters.tsx` - Filters component
-  - `ticket-table.tsx` - Table component for displaying tickets
-  - `ticket-pagination.tsx` - Pagination component
-  - `ticket-list-info.tsx` - Information component showing ticket counts
-- `index.tsx` - Main widget that composes all UI components and uses feature hooks
-
 ### Pages Layer (`/src/pages/`)
 
-Page components that compose widgets.
+Page components following page-first approach. Each page contains its own features and widgets.
 
 #### Ticket List Page (`/src/pages/ticket-list/`)
 
-- `TicketListPage.tsx` - Page component that uses TicketList widget
-- Minimal component that only handles page layout and composition
+- `TicketListPage.tsx` - Page component that composes UI components
+- **Model** (`/model/`):
+  - **Hooks** (`/hooks/`):
+    - `use-ticket-list.ts` - Hook for filtering and managing ticket list
+    - `use-ticket-list-params.ts` - Hook for managing query parameters (filters and pagination)
+    - `use-ticket-list-query-params-config.ts` - Configuration for query parameters
+- **UI** (`/ui/`):
+  - `TicketList.tsx` - Main component that composes all UI components and uses hooks
+  - `ticket-filters.tsx` - Filters component for search, status, and priority
+  - `ticket-table.tsx` - DataTable component using TanStack Table with column configuration
+  - `ticket-list-info.tsx` - Information component showing ticket counts
 
 ## Architecture Principles
 
-1. **Separation of Concerns**: Business logic is separated from UI components
-2. **Reusability**: Features and widgets can be reused across different pages
+1. **Page-First Approach**: Features and widgets are scoped to their respective pages
+2. **Separation of Concerns**: Business logic is separated from UI components
 3. **Testability**: Hooks can be tested independently from UI components
 4. **Maintainability**: Clear structure makes it easy to find and modify code
+5. **Isolation**: Each page is self-contained with its own features and widgets
+
+## Page-First Structure
+
+Following Feature-Sliced Design page-first approach:
+
+```
+pages/
+  ticket-list/
+    TicketListPage.tsx      # Page component
+    model/
+      hooks/                # Business logic hooks
+        use-ticket-list.ts
+        use-ticket-list-params.ts
+        use-ticket-list-query-params-config.ts
+    ui/                     # UI components
+      TicketList.tsx        # Main composition component
+      ticket-filters.tsx
+      ticket-table.tsx
+      ticket-list-info.tsx
+```
+
+This ensures that:
+
+- All business logic is in model/hooks
+- All UI components are in ui folder
+- Clear separation between logic and presentation
+- Page is self-contained with its own model and UI
+- Easier to understand dependencies and relationships

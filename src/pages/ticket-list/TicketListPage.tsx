@@ -1,4 +1,4 @@
-import { TicketList } from "@/widgets/ticket-list";
+import { TicketList } from "./ui";
 
 export const TicketListPage = () => {
 	return (

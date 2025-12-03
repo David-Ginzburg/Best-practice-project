@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { useTicketListParams, useTicketList } from "@/features/ticket-list";
-import { TicketFilters, TicketTable, TicketListInfo } from "./ui";
+import { useTicketListParams, useTicketList } from "../model";
+import { TicketFilters, TicketTable, TicketListInfo } from "./";
 import { Pagination } from "@/shared/components/pagination";
 import { usePagination } from "@/shared/lib/pagination";
 
@@ -51,3 +51,4 @@ export const TicketList = () => {
 		</>
 	);
 };
+

@@ -7,7 +7,7 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from "@/shared/shadcn/ui/pagination";
-import type { PaginationProps } from "../types";
+import type { PaginationProps } from "./types";
 import { cn } from "@/shared/lib/utils";
 
 export const Pagination = ({
@@ -90,4 +90,3 @@ export const Pagination = ({
 		</ShadcnPagination>
 	);
 };
-
