@@ -6,6 +6,7 @@
 export const PATHS = {
 	ticketList: "/ticket-list",
 	createTicket: "/create-ticket",
+	createCustomTicket: "/create-custom-ticket",
 } as const;
 
 export type Path = (typeof PATHS)[keyof typeof PATHS];

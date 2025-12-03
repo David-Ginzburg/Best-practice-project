@@ -12,6 +12,10 @@ const CreateTicketPage = lazy(() =>
 	import("@/pages/create-ticket").then((module) => ({ default: module.CreateTicketPage }))
 );
 
+const CreateCustomTicketPage = lazy(() =>
+	import("@/pages/create-custom-ticket").then((module) => ({ default: module.CreateCustomTicketPage }))
+);
+
 export const router = createBrowserRouter([
 	{
 		element: <Layout />,
@@ -24,6 +28,10 @@ export const router = createBrowserRouter([
 			{
 				path: PATHS.createTicket,
 				element: <CreateTicketPage />,
+			},
+			{
+				path: PATHS.createCustomTicket,
+				element: <CreateCustomTicketPage />,
 			},
 		],
 	},
