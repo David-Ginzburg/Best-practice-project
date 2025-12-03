@@ -1,0 +1,53 @@
+---
+alwaysApply: true
+---
+
+# Project Rules
+
+## 1. Update Rules
+
+- **ALWAYS** apply business requirements from @docs/@requirements.md
+- **MANDATORY** update @docs/architecture.md for any changes:
+
+### When to update:
+
+- Adding new components or files
+- Changing API endpoints or their behavior
+- Modifying caching system
+- Security changes (cookies, authentication)
+- Configuration updates (TypeScript, Docker, etc.)
+- Adding new dependencies or tools
+- Changes in logging or monitoring
+
+## 2. Architecture Documentation Updates
+
+### How to update:
+
+1. **Add to "Recent Changes" section** brief description of changes
+2. **Update relevant sections** (API, components, caching, etc.)
+3. **Add code examples** if implementation changed
+4. **Update tables** (endpoints, roles, components)
+
+**Detailed templates:** See @.cursor/rules/architecture-updates.md
+
+## 3. Pre-completion Checklist
+
+Before completing any task:
+
+- [ ] Verified changes comply with @docs/arch-rules.md
+- [ ] Ensured requirements from @requirements.md are met
+- [ ] Updated @docs/architecture.md with change descriptions
+- [ ] Added code examples if needed
+
+- **MANDATORY** never commit changes automatically
+
+## 4. Code Language Standards
+
+**All code must be written in English:**
+
+- Variable names, function names, class names
+- Comments and documentation
+- Error messages and logs
+- API responses
+- File and folder names
+- Git commit messages
