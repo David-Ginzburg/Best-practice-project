@@ -14,7 +14,7 @@ export const Layout = () => {
 					<header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
 						<SidebarTrigger />
 					</header>
-					<div className="flex-1">
+					<div className="flex-1" style={{ viewTransitionName: "page-content" }}>
 						<Suspense
 							fallback={
 								<div className="h-full w-full flex items-center justify-center">

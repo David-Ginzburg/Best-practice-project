@@ -1,10 +1,10 @@
-import { useNavigate } from "react-router-dom";
 import { Home, SearchX } from "lucide-react";
 import { Button } from "@/shared/shadcn/ui/button";
 import { PATHS } from "@/shared/paths";
+import { useTransitionNavigate } from "@/shared/hooks/use-transition-navigate";
 
 export const NotFoundPage = () => {
-	const navigate = useNavigate();
+	const navigate = useTransitionNavigate();
 
 	return (
 		<div className="flex flex-1 flex-col items-center justify-center px-4 py-16">
@@ -38,11 +38,11 @@ export const NotFoundPage = () => {
 
 				{/* Action buttons */}
 				<div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-					<Button size="lg" onClick={() => navigate(PATHS.ticketList)} className="group">
+					<Button size="lg" onClick={() => navigate(PATHS.ticketList, "forward")} className="group">
 						<Home className="mr-2 size-4" />
 						Go to Home
 					</Button>
-					<Button size="lg" variant="outline" onClick={() => navigate(-1)}>
+					<Button size="lg" variant="outline" onClick={() => navigate(-1, "backward")}>
 						Go Back
 					</Button>
 				</div>

@@ -1,0 +1,40 @@
+/* View Transitions API styles for smooth pagination transitions */
+@view-transition {
+	navigation: auto;
+}
+
+::view-transition-old(ticket-table),
+::view-transition-new(ticket-table) {
+	animation-duration: 0.4s;
+	animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+::view-transition-old(ticket-table) {
+	animation-name: slide-out-horizontal;
+}
+
+::view-transition-new(ticket-table) {
+	animation-name: slide-in-horizontal;
+}
+
+@keyframes slide-out-horizontal {
+	from {
+		transform: translateX(0);
+		opacity: 1;
+	}
+	to {
+		transform: translateX(calc(100% * var(--transition-direction, 1)));
+		opacity: 0;
+	}
+}
+
+@keyframes slide-in-horizontal {
+	from {
+		transform: translateX(calc(-100% * var(--transition-direction, 1)));
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}

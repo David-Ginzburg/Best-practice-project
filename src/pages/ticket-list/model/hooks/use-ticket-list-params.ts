@@ -1,6 +1,7 @@
 import { useSearchParameters } from "@/shared/query-params";
 import { useTicketListQueryParamsConfig } from "./use-ticket-list-query-params-config";
 import type { TicketStatus, TicketPriority } from "@/entities/ticket";
+import { startViewTransition } from "@/shared/lib/view-transition";
 
 export const useTicketListParams = () => {
 	const ticketListQueryParamsConfig = useTicketListQueryParamsConfig();
@@ -27,7 +28,10 @@ export const useTicketListParams = () => {
 	};
 
 	const setPage = (newPage: number) => {
-		setSearchParams({ page: newPage });
+		const direction = newPage > page ? "forward" : "backward";
+		startViewTransition(() => {
+			setSearchParams({ page: newPage });
+		}, direction);
 	};
 
 	return {

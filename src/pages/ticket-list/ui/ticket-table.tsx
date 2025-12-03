@@ -8,7 +8,8 @@ import {
 	TableRow,
 } from "@/shared/shadcn/ui/table";
 import type { Ticket } from "@/entities/ticket";
-import { ticketColumns } from "./columns";
+import { ticketColumns } from "../model/const/columns";
+import "./ticket-list.css";
 
 interface TicketTableProps {
 	tickets: Ticket[];
@@ -23,7 +24,10 @@ export const TicketTable = ({ tickets, columns = ticketColumns }: TicketTablePro
 	});
 
 	return (
-		<div className="mb-6 overflow-hidden rounded-md border">
+		<div
+			className="mb-6 overflow-hidden rounded-md border"
+			style={{ viewTransitionName: "ticket-table" }}
+		>
 			<Table>
 				<TableHeader>
 					{table.getHeaderGroups().map((headerGroup) => (
@@ -66,4 +70,3 @@ export const TicketTable = ({ tickets, columns = ticketColumns }: TicketTablePro
 		</div>
 	);
 };
-

@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
 	Sidebar,
 	SidebarContent,
@@ -9,6 +9,7 @@ import {
 	SidebarMenuButton,
 	SidebarMenuItem,
 } from "@/shared/shadcn/ui/sidebar";
+import { TransitionLink } from "@/shared/components/transition-link/TransitionLink";
 import { menuItems } from "../model/const";
 
 export const LayoutSidebar = () => {
@@ -26,10 +27,10 @@ export const LayoutSidebar = () => {
 								return (
 									<SidebarMenuItem key={item.title}>
 										<SidebarMenuButton asChild isActive={isActive}>
-											<Link to={item.url}>
+											<TransitionLink to={item.url}>
 												<item.icon />
 												<span>{item.title}</span>
-											</Link>
+											</TransitionLink>
 										</SidebarMenuButton>
 									</SidebarMenuItem>
 								);
