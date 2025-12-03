@@ -1,4 +1,4 @@
-export { useTicketFilters } from "./use-ticket-filters";
+export { useTicketListParams } from "./use-ticket-list-params";
+export { useTicketListQueryParamsConfig } from "./use-ticket-list-query-params-config";
 export { useTicketList } from "./use-ticket-list";
-export { useTicketPagination } from "./use-ticket-pagination";
 

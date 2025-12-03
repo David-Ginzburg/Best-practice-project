@@ -1,9 +1,14 @@
-import { useTicketFilters, useTicketList, useTicketPagination } from "@/features/ticket-list";
+import { useMemo } from "react";
+import { useTicketListParams, useTicketList } from "@/features/ticket-list";
 import { TicketFilters, TicketTable, TicketListInfo } from "./ui";
-import { Pagination } from "@/shared/components/ui/pagination";
+import { Pagination } from "@/shared/components/pagination";
+import { usePagination } from "@/shared/lib/pagination";
+
+const ITEMS_PER_PAGE = 10;
 
 export const TicketList = () => {
-	const { searchQuery, statusFilter, priorityFilter, setFilters } = useTicketFilters();
+	const { params, setFilters, setPage } = useTicketListParams();
+	const { searchQuery, statusFilter, priorityFilter, page } = params;
 
 	const { tickets, filteredTickets } = useTicketList({
 		searchQuery,
@@ -11,12 +16,15 @@ export const TicketList = () => {
 		priorityFilter,
 	});
 
-	const { currentPage, totalPages, startIndex, endIndex, setCurrentPage, pageNumbers } =
-		useTicketPagination({
-			filteredTicketsCount: filteredTickets.length,
-		});
+	const { totalPages, startIndex, endIndex, pageNumbers } = usePagination({
+		currentPage: page,
+		totalItems: filteredTickets.length,
+		itemsPerPage: ITEMS_PER_PAGE,
+	});
 
-	const paginatedTickets = filteredTickets.slice(startIndex, endIndex);
+	const paginatedTickets = useMemo(() => {
+		return filteredTickets.slice(startIndex, endIndex);
+	}, [filteredTickets, startIndex, endIndex]);
 
 	return (
 		<>
@@ -30,10 +38,10 @@ export const TicketList = () => {
 			/>
 			<TicketTable tickets={paginatedTickets} />
 			<Pagination
-				currentPage={currentPage}
+				currentPage={page}
 				totalPages={totalPages}
 				pageNumbers={pageNumbers}
-				onPageChange={setCurrentPage}
+				onPageChange={setPage}
 			/>
 			<TicketListInfo
 				shownCount={paginatedTickets.length}

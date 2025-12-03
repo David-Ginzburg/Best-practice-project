@@ -1,6 +1,2 @@
-export {
-	useTicketFilters,
-	useTicketList,
-	useTicketPagination,
-} from "./model";
+export { useTicketListParams, useTicketListQueryParamsConfig, useTicketList } from "./model";
 

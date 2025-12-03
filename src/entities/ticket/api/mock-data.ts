@@ -1,8 +1,9 @@
-import type { Ticket, TicketStatus, TicketPriority } from "../model/types";
+import type { Ticket } from "../model/types";
+import { TICKET_STATUSES, TICKET_PRIORITIES } from "../model/const";
 
 export const generateMockTickets = (): Ticket[] => {
-	const statuses: TicketStatus[] = ["open", "in_progress", "resolved", "closed"];
-	const priorities: TicketPriority[] = ["low", "medium", "high", "urgent"];
+	const statuses = TICKET_STATUSES;
+	const priorities = TICKET_PRIORITIES;
 	const assignees = [
 		"Ivan Petrov",
 		"Maria Sidorova",
@@ -23,20 +24,29 @@ export const generateMockTickets = (): Ticket[] => {
 		"Search problem",
 	];
 
+	// Simple seeded random function for deterministic randomness
+	const seededRandom = (seed: number) => {
+		const x = Math.sin(seed) * 10000;
+		return x - Math.floor(x);
+	};
+
 	const tickets: Ticket[] = [];
 	for (let i = 1; i <= 50; i++) {
+		const statusSeed = i * 7;
+		const prioritySeed = i * 11;
+		const dateSeed = i * 13;
+
 		tickets.push({
 			id: `TICKET-${String(i).padStart(4, "0")}`,
 			title: `${titles[i % titles.length]} #${i}`,
-			status: statuses[i % statuses.length],
-			priority: priorities[i % priorities.length],
+			status: statuses[Math.floor(seededRandom(statusSeed) * statuses.length)],
+			priority: priorities[Math.floor(seededRandom(prioritySeed) * priorities.length)],
 			assignee: assignees[i % assignees.length],
 			createdAt: new Date(
-				Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000
+				Date.now() - seededRandom(dateSeed) * 30 * 24 * 60 * 60 * 1000
 			).toLocaleDateString("en-US"),
 		});
 	}
 
 	return tickets;
 };
-
