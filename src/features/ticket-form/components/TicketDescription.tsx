@@ -3,11 +3,6 @@ import { Label } from "@/shared/shadcn/ui/label";
 import { Field, FieldLabel, FieldError } from "@/shared/shadcn/ui/field";
 import { cn } from "@/shared/lib/utils";
 
-/**
- * Atomic component for ticket description textarea
- * Uses useFormContext to access form state - no props needed
- * Validation is handled by zod schema via resolver
- */
 export const TicketDescription = () => {
 	const {
 		register,

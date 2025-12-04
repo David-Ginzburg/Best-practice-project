@@ -12,11 +12,6 @@ interface CustomFieldProps {
 	required?: boolean;
 }
 
-/**
- * Atomic component for custom fields (only used in custom ticket form)
- * Uses useFormContext to access form state
- * For text inputs, uses FormInput; for textarea, renders custom textarea
- */
 export const CustomField = ({
 	name,
 	label,
@@ -31,7 +26,6 @@ export const CustomField = ({
 
 	const error = errors[name];
 
-	// Use FormInput for text inputs
 	if (type === "text") {
 		return (
 			<FormInput
@@ -44,9 +38,6 @@ export const CustomField = ({
 		);
 	}
 
-	// Custom textarea (FormInput doesn't support textarea yet)
-	// Validation is handled by zod schema via resolver
-	// Show asterisk if field is required
 	if (type === "textarea") {
 		return (
 			<Field>

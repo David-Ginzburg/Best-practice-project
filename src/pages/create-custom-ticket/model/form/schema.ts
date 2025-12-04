@@ -1,9 +1,5 @@
 import { z } from "zod";
 
-/**
- * Zod schema for custom ticket form
- * Validation rules are centralized here
- */
 export const customTicketFormSchema = z.object({
 	title: z
 		.string()

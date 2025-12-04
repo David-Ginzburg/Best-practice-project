@@ -152,25 +152,6 @@
 	animation-name: page-fade-in;
 }
 
-/* Override for theme transition - expanding circle effect */
-/* Applied when .theme-transition class is present on root */
-/* The class is added to root to trigger theme-specific animations */
-.theme-transition::view-transition-old(page-content) {
-	animation-name: theme-circle-out !important;
-	animation-duration: 0.8s !important;
-	animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-	z-index: 1;
-	mix-blend-mode: normal;
-}
-
-.theme-transition::view-transition-new(page-content) {
-	animation-name: theme-circle-in !important;
-	animation-duration: 0.8s !important;
-	animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
-	z-index: 9999;
-	mix-blend-mode: normal;
-}
-
 @keyframes page-fade-out {
 	from {
 		opacity: 1;

@@ -6,10 +6,6 @@ interface SuccessMessageProps {
 	className?: string;
 }
 
-/**
- * Success message component with icon
- * Displays a visually appealing success notification
- */
 export const SuccessMessage = ({
 	message = "Success! Your request has been processed.",
 	className,

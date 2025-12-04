@@ -11,22 +11,6 @@ interface FormInputProps extends Omit<React.ComponentProps<typeof Input>, "name"
 	showError?: boolean;
 }
 
-/**
- * Universal form input component that uses react-hook-form's FormProvider
- * Validation is handled by zod schema via resolver, not inline
- * 
- * @example
- * ```tsx
- * <FormProvider {...methods}>
- *   <FormInput 
- *     name="email" 
- *     label="Email" 
- *     type="email"
- *     required
- *   />
- * </FormProvider>
- * ```
- */
 export const FormInput = ({
 	name,
 	label,

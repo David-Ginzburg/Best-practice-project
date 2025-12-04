@@ -4,10 +4,6 @@ import { Field, FieldLabel, FieldError } from "@/shared/shadcn/ui/field";
 import { TICKET_PRIORITIES } from "@/entities/ticket/model/const";
 import type { TicketPriority as TicketPriorityType } from "@/entities/ticket/model/types";
 
-/**
- * Atomic component for ticket priority select
- * Uses useFormContext to access form state - no props needed
- */
 export const TicketPriority = () => {
 	const {
 		register,
