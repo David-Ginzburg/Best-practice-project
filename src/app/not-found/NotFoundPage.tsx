@@ -39,11 +39,11 @@ export const NotFoundPage = () => {
 
 				{/* Action buttons */}
 				<div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-					<Button size="lg" onClick={() => navigate(PATHS.ticketList, "forward")} className="group">
+					<Button size="lg" onClick={() => navigate(PATHS.ticketList)} className="group">
 						<Home className="mr-2 size-4" />
 						Go to Home
 					</Button>
-					<Button size="lg" variant="outline" onClick={() => navigate(-1, "backward")}>
+					<Button size="lg" variant="outline" onClick={() => navigate(-1)}>
 						Go Back
 					</Button>
 				</div>

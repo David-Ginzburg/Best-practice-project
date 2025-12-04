@@ -1,27 +1,36 @@
 import { useNavigate } from "react-router-dom";
 import { useCallback } from "react";
-import { startViewTransition } from "@/shared/lib/view-transition";
 
 /**
  * Hook that wraps useNavigate with View Transition API support
- * Provides smooth page transitions when navigating programmatically
+ * Animations apply only to page-content, not root, to keep Sidebar static
  */
 export const useTransitionNavigate = () => {
 	const navigate = useNavigate();
 
 	const transitionNavigate = useCallback(
-		(to: string | number, direction: "forward" | "backward" = "forward") => {
-			startViewTransition(() => {
+		(to: string | number) => {
+			// Check if View Transitions API is supported
+			if (!document.startViewTransition) {
 				if (typeof to === "number") {
 					navigate(to);
 				} else {
 					navigate(to);
 				}
-			}, direction);
+				return;
+			}
+
+			// Create transition for page-content only (not root)
+			document.startViewTransition(() => {
+				if (typeof to === "number") {
+					navigate(to);
+				} else {
+					navigate(to);
+				}
+			});
 		},
 		[navigate]
 	);
 
 	return transitionNavigate;
 };
-

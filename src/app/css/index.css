@@ -119,62 +119,72 @@
 	}
 }
 
-/* Theme transition animation - expanding circle effect */
-:root {
-	--theme-transition-x: 0px;
-	--theme-transition-y: 0px;
-	--theme-transition-radius: 0px;
+/* View Transitions API for page navigation */
+@view-transition {
+	navigation: auto;
 }
 
-/* Theme transition animation - expanding circle effect */
-::view-transition-old(root),
-::view-transition-new(root) {
+/* Disable default root animations for theme transitions */
+::view-transition-old(root) {
+	animation: none;
 	mix-blend-mode: normal;
 }
 
-/* Old view fades out with shrinking circle */
-::view-transition-old(root) {
-	z-index: 1;
-	animation: theme-circle-out 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* New view fades in with expanding circle */
 ::view-transition-new(root) {
+	animation: none;
+	mix-blend-mode: normal;
+	z-index: 1;
+}
+
+/* Page content transition animations - only for page-content, not root */
+/* Default: simple fade for page navigation */
+::view-transition-old(page-content),
+::view-transition-new(page-content) {
+	animation-duration: 0.3s;
+	animation-timing-function: ease-in-out;
+}
+
+::view-transition-old(page-content) {
+	animation-name: page-fade-out;
+}
+
+::view-transition-new(page-content) {
+	animation-name: page-fade-in;
+}
+
+/* Override for theme transition - expanding circle effect */
+/* Applied when .theme-transition class is present on root */
+/* The class is added to root to trigger theme-specific animations */
+.theme-transition::view-transition-old(page-content) {
+	animation-name: theme-circle-out !important;
+	animation-duration: 0.8s !important;
+	animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
+	z-index: 1;
+	mix-blend-mode: normal;
+}
+
+.theme-transition::view-transition-new(page-content) {
+	animation-name: theme-circle-in !important;
+	animation-duration: 0.8s !important;
+	animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1) !important;
 	z-index: 9999;
-	animation: theme-circle-in 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+	mix-blend-mode: normal;
 }
 
-/* Keyframes for theme transition - expanding circle effect */
-@keyframes theme-circle-out {
+@keyframes page-fade-out {
 	from {
-		clip-path: circle(
-			var(--theme-transition-radius) at var(--theme-transition-x) var(--theme-transition-y)
-		);
 		opacity: 1;
 	}
 	to {
-		clip-path: circle(0px at var(--theme-transition-x) var(--theme-transition-y));
 		opacity: 0;
 	}
 }
 
-@keyframes theme-circle-in {
+@keyframes page-fade-in {
 	from {
-		clip-path: circle(0px at var(--theme-transition-x) var(--theme-transition-y));
 		opacity: 0;
 	}
 	to {
-		clip-path: circle(
-			var(--theme-transition-radius) at var(--theme-transition-x) var(--theme-transition-y)
-		);
 		opacity: 1;
-	}
-}
-
-/* Ensure smooth background color transition */
-@supports (view-transition-name: none) {
-	::view-transition-group(root) {
-		animation-duration: 0.8s;
-		animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 	}
 }

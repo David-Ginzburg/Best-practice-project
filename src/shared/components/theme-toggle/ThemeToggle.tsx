@@ -31,34 +31,66 @@ export const ThemeToggle = ({ className }: ThemeToggleProps) => {
 			return;
 		}
 
-		// Temporarily disable view-transition-name for all elements except root
-		const elements = document.querySelectorAll("[style*='view-transition-name']");
-		const savedNames: Map<HTMLElement, string> = new Map();
+		// Temporarily disable view-transition-name for elements that should not animate during theme change
+		const ticketTable = document.querySelector(
+			'[style*="view-transition-name: ticket-table"]'
+		) as HTMLElement;
+		const ticketTableOriginalName = ticketTable?.style.viewTransitionName;
+		if (ticketTable && ticketTableOriginalName === "ticket-table") {
+			ticketTable.style.viewTransitionName = "none";
+		}
 
-		elements.forEach((el) => {
-			const htmlEl = el as HTMLElement;
-			const currentName = htmlEl.style.viewTransitionName;
-			if (currentName && currentName !== "none" && currentName !== "root") {
-				savedNames.set(htmlEl, currentName);
-				htmlEl.style.viewTransitionName = "none";
-			}
-		});
-
-		// Set CSS variables for animation
-		document.documentElement.style.setProperty("--theme-transition-x", `${x}px`);
-		document.documentElement.style.setProperty("--theme-transition-y", `${y}px`);
-		document.documentElement.style.setProperty("--theme-transition-radius", `${endRadius}px`);
+		// Temporarily disable view-transition-name for page-content to prevent page transition conflicts
+		const pageContent = document.querySelector(
+			'[style*="view-transition-name: page-content"]'
+		) as HTMLElement;
+		const pageContentOriginalName = pageContent?.style.viewTransitionName;
+		if (pageContent && pageContentOriginalName === "page-content") {
+			pageContent.style.viewTransitionName = "none";
+		}
 
 		// Create a transition with custom animation
 		const transition = document.startViewTransition(() => {
 			toggleTheme();
 		});
 
-		// Restore view-transition-name after transition completes
+		// Wait for the transition to be ready, then animate
+		transition.ready.then(() => {
+			// Animate both old and new views for better visibility
+			// Old view: shrink circle from full to 0px
+			document.documentElement.animate(
+				{
+					clipPath: [`circle(${endRadius}px at ${x}px ${y}px)`, `circle(0px at ${x}px ${y}px)`],
+				},
+				{
+					duration: 800,
+					easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+					pseudoElement: "::view-transition-old(root)",
+				}
+			);
+
+			// New view: expand circle from 0px to full
+			document.documentElement.animate(
+				{
+					clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${endRadius}px at ${x}px ${y}px)`],
+				},
+				{
+					duration: 800,
+					easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+					pseudoElement: "::view-transition-new(root)",
+				}
+			);
+		});
+
+		// Clean up after transition completes
 		transition.finished.finally(() => {
-			savedNames.forEach((name, el) => {
-				el.style.viewTransitionName = name;
-			});
+			// Restore view-transition-name after transition completes
+			if (ticketTable && ticketTableOriginalName === "ticket-table") {
+				ticketTable.style.viewTransitionName = ticketTableOriginalName;
+			}
+			if (pageContent && pageContentOriginalName === "page-content") {
+				pageContent.style.viewTransitionName = pageContentOriginalName;
+			}
 		});
 	};
 
