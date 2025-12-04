@@ -10,11 +10,11 @@
 }
 
 ::view-transition-old(ticket-table) {
-	animation-name: slide-out-horizontal;
+	animation-name: slide-in-horizontal;
 }
 
 ::view-transition-new(ticket-table) {
-	animation-name: slide-in-horizontal;
+	animation-name: slide-out-horizontal;
 }
 
 @keyframes slide-out-horizontal {

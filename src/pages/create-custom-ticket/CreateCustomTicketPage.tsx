@@ -28,7 +28,7 @@ export const CreateCustomTicketPage = () => {
 	const methods = useForm<CustomTicketFormData>({
 		resolver: zodResolver(customTicketFormSchema),
 		defaultValues: {
-			title: "[Custom] ",
+			title: "",
 			description: "",
 			priority: "high",
 			customReason: "",
