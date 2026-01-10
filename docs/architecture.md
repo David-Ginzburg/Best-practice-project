@@ -12,6 +12,7 @@
 - All business logic moved to model/hooks, UI components in ui folder
 - Created entities layer for ticket domain model
 - Refactored ticket table to use DataTable (TanStack Table) with column configuration
+- Added Parallax page with CSS-only parallax scroll effect demonstration
 
 ## Feature-Sliced Design Structure
 
@@ -45,6 +46,12 @@ Page components following page-first approach. Each page contains its own featur
   - `ticket-filters.tsx` - Filters component for search, status, and priority
   - `ticket-table.tsx` - DataTable component using TanStack Table with column configuration
   - `ticket-list-info.tsx` - Information component showing ticket counts
+
+#### Parallax Page (`/src/pages/parallax/`)
+
+- `ParallaxPage.tsx` - Page component demonstrating CSS-only parallax scroll effect
+- `parallax.css` - CSS styles implementing parallax effect using 3D transforms (`perspective`, `translateZ`, `transform-style: preserve-3d`)
+- Effect achieved through different scroll speeds for background layers using negative `translateZ` values
 
 ## Architecture Principles
 

@@ -18,6 +18,10 @@ const CreateCustomTicketPage = lazy(() =>
 	}))
 );
 
+const ParallaxPage = lazy(() =>
+	import("@/pages/parallax").then((module) => ({ default: module.ParallaxPage }))
+);
+
 export const router = createBrowserRouter([
 	{
 		element: <Layout />,
@@ -38,6 +42,10 @@ export const router = createBrowserRouter([
 			{
 				path: PATHS.createCustomTicket,
 				element: <CreateCustomTicketPage />,
+			},
+			{
+				path: PATHS.parallax,
+				element: <ParallaxPage />,
 			},
 		],
 	},

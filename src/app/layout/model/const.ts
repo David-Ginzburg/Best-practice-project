@@ -1,4 +1,4 @@
-import { ListTodo, Plus, FileEdit } from "lucide-react";
+import { ListTodo, Plus, FileEdit, Layers } from "lucide-react";
 import { PATHS } from "@/shared/paths";
 
 export const menuItems = [
@@ -16,5 +16,10 @@ export const menuItems = [
 		title: "Create Custom Ticket",
 		url: PATHS.createCustomTicket,
 		icon: FileEdit,
+	},
+	{
+		title: "Parallax Effect",
+		url: PATHS.parallax,
+		icon: Layers,
 	},
 ];

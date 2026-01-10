@@ -1,0 +1,274 @@
+/* 
+ * Импорт шрифта Nunito
+ */
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+
+/* 
+ * КОНТЕЙНЕР СТРАНИЦЫ - КЛЮЧЕВОЙ ЭЛЕМЕНТ ДЛЯ ПАРАЛЛАКСА
+ * 
+ * Почему position: fixed?
+ * - Изолирует страницу от остального приложения
+ * - Позволяет создать независимый скролл-контейнер
+ * - Не влияет на Layout и другие страницы
+ * 
+ * Почему perspective: 1px?
+ * - Создает 3D-пространство для дочерних элементов
+ * - Чем меньше значение (1px), тем сильнее эффект глубины
+ * - Это "точка схода" для 3D-трансформаций
+ * - Без perspective элементы с translateZ не будут визуально отличаться
+ * 
+ * Почему transform-style: preserve-3d?
+ * - Сохраняет 3D-трансформации для всех дочерних элементов
+ * - Без этого дочерние элементы "сплющиваются" в 2D плоскость
+ * - Позволяет применять translateZ к вложенным элементам
+ * 
+ * Почему overflow-y: scroll?
+ * - Скролл должен происходить на элементе с perspective
+ * - Только при скролле элемента с perspective работает эффект параллакса
+ * - Если скролл на body, а perspective на дочернем элементе - эффект не работает
+ */
+.parallax-page-container {
+	height: 100dvh;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	perspective: 1px;
+	transform-style: preserve-3d;
+	margin: 0;
+	padding: 0;
+	font-family: Nunito, sans-serif;
+	position: fixed;
+}
+
+/* 
+ * Стили для заголовков
+ */
+.parallax-page-container h1 {
+	font-size: 250%;
+}
+
+.parallax-page-container p {
+	font-size: 140%;
+	line-height: 150%;
+	color: #333;
+}
+
+/* 
+ * СЛАЙДЫ - ОСНОВНЫЕ СЕКЦИИ
+ * 
+ * Почему transform-style: inherit?
+ * - Наследует 3D-контекст от родителя (.parallax-page-container)
+ * - Позволяет применять translateZ к псевдоэлементам ::before
+ * - Без этого псевдоэлементы не будут участвовать в 3D-пространстве
+ * 
+ * Почему width: 100vw?
+ * - Занимает всю ширину viewport
+ * - Важно для правильного позиционирования фонов
+ */
+.slide {
+	position: relative;
+	padding: 25vh 10%;
+	min-height: 100dvh;
+	width: 100vw;
+	box-sizing: border-box;
+	box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.7);
+	transform-style: inherit;
+}
+
+/* 
+ * ИЗОБРАЖЕНИЯ С ЭФФЕКТОМ ПАРАЛЛАКСА
+ * 
+ * Почему translateZ(0.25px)?
+ * - Положительное значение перемещает элемент "вперед" (ближе к зрителю)
+ * - При скролле элементы с положительным translateZ движутся БЫСТРЕЕ
+ * - 0.25px - небольшое значение для плавного эффекта
+ * 
+ * Почему scale(0.75)?
+ * - Компенсирует визуальное увеличение из-за приближения
+ * - Формула: scale = perspective / (perspective + translateZ)
+ * - Для translateZ(0.25px): scale = 1 / (1 + 0.25) ≈ 0.8, но используется 0.75
+ * - Без scale элемент будет выглядеть слишком большим
+ * 
+ * Почему rotate(2deg)?
+ * - Создает визуальный эффект "летающих" изображений
+ * - Не влияет на параллакс, только на внешний вид
+ */
+.parallax-page-container img {
+	position: absolute;
+	top: 50%;
+	left: 35%;
+	width: 320px;
+	height: 240px;
+	transform: translateZ(0.25px) scale(0.75) translateX(-94%) translateY(-100%) rotate(2deg);
+	padding: 10px;
+	border-radius: 5px;
+	background: rgba(240, 230, 220, 0.7);
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+}
+
+/* 
+ * ВТОРОЕ ИЗОБРАЖЕНИЕ - ДРУГОЙ УРОВЕНЬ ГЛУБИНЫ
+ * 
+ * Почему translateZ(0.4px)?
+ * - Большее значение = элемент еще ближе к зрителю
+ * - Движется еще быстрее при скролле
+ * - Создает многослойный эффект параллакса
+ * 
+ * Почему scale(0.6)?
+ * - Компенсирует большее приближение
+ * - Делает изображение визуально меньше, чтобы не выглядело гигантским
+ */
+.parallax-page-container img:last-of-type {
+	transform: translateZ(0.4px) scale(0.6) translateX(-104%) translateY(-40%) rotate(-5deg);
+}
+
+/* 
+ * ПСЕВДОЭЛЕМЕНТ ДЛЯ ФОНОВЫХ ИЗОБРАЖЕНИЙ
+ * 
+ * Почему ::before?
+ * - Позволяет добавить фоновое изображение без дополнительного HTML
+ * - Можно применить translateZ к фону отдельно от контента
+ * - Контент остается на z=0, фон уходит "назад"
+ */
+.slide:before {
+	content: "";
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	box-shadow: 0 0 8px 1px rgba(0, 0, 0, 0.7);
+}
+
+/* 
+ * БЛОКИ С КОНТЕНТОМ
+ */
+.title {
+	width: 50%;
+	padding: 5%;
+	border-radius: 5px;
+	background: rgba(240, 230, 220, 0.7);
+	box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
+}
+
+/* 
+ * Чередование позиций блоков контента для визуального разнообразия
+ */
+.slide:nth-child(2n) .title {
+	margin-left: 0;
+	margin-right: auto;
+}
+
+.slide:nth-child(2n + 1) .title {
+	margin-left: auto;
+	margin-right: 0;
+}
+
+/* 
+ * Фон для слайдов и их псевдоэлементов
+ */
+.slide,
+.slide:before {
+	background: 50% 50% / cover;
+}
+
+/* 
+ * Стили для header-секций
+ */
+.header {
+	text-align: center;
+	font-size: 175%;
+	color: #fff;
+	text-shadow: 0 2px 2px #000;
+}
+
+/* 
+ * ПЕРВАЯ СЕКЦИЯ (#title) - ЗАГОЛОВОК
+ * 
+ * Почему z-index: 2?
+ * - Обеспечивает, что заголовок поверх фона
+ * - Фон в ::before имеет z-index по умолчанию (ниже)
+ */
+#title {
+	background-image: url("https://picsum.photos/640/480");
+	z-index: 2;
+}
+
+/* 
+ * ЗАГОЛОВОК В ПЕРВОЙ СЕКЦИИ С ПАРАЛЛАКСОМ
+ * 
+ * Почему translateZ(0.25px)?
+ * - Заголовок движется немного быстрее фона
+ * - Создает эффект "выпрыгивания" текста
+ * 
+ * Почему scale(0.75)?
+ * - Компенсирует приближение
+ * - Без этого заголовок будет слишком большим
+ * 
+ * Почему transform-origin: 50% 100%?
+ * - Точка трансформации внизу по центру
+ * - Заголовок масштабируется от нижней точки
+ * - Создает эффект "растущего" текста
+ */
+#title h1 {
+	transform: translateZ(0.25px) scale(0.75);
+	transform-origin: 50% 100%;
+}
+
+/* 
+ * СЕКЦИЯ #slide1 - ФОН С ПАРАЛЛАКСОМ
+ * 
+ * Почему translateZ(-1px)?
+ * - Отрицательное значение перемещает элемент "назад" (дальше от зрителя)
+ * - При скролле элементы с отрицательным translateZ движутся МЕДЛЕННЕЕ
+ * - Это и есть основной эффект параллакса!
+ * 
+ * Почему scale(2)?
+ * - КРИТИЧЕСКИ ВАЖНО: компенсирует визуальное уменьшение из-за отдаления
+ * - Формула: scale = (perspective - translateZ) / perspective
+ * - Для translateZ(-1px) и perspective: 1px: scale = (1 - (-1)) / 1 = 2
+ * - Без scale фон будет выглядеть маленьким и далеким
+ * - С scale(2) фон заполняет весь экран, но движется медленнее
+ * 
+ * КАК ЭТО РАБОТАЕТ:
+ * 1. Пользователь скроллит контейнер с perspective
+ * 2. Контент (z=0) движется с обычной скоростью
+ * 3. Фон (z=-1px) движется медленнее из-за отдаления
+ * 4. scale(2) компенсирует уменьшение, фон остается полноразмерным
+ * 5. Результат: фон "отстает" от контента = эффект параллакса!
+ */
+#slide1:before {
+	background-image: url("https://picsum.photos/960/520");
+	transform: translateZ(-1px) scale(2);
+}
+
+/* 
+ * СЕКЦИЯ #slide2 - ФОН БЕЗ ПАРАЛЛАКСА
+ * 
+ * Почему без translateZ?
+ * - Фон применяется напрямую к .slide, а не к ::before
+ * - Фон движется с обычной скоростью (z=0)
+ * - Контрастирует с другими секциями, где фон медленнее
+ */
+#slide2 {
+	background-image: url("https://picsum.photos/960/400");
+	z-index: 2;
+}
+
+/* 
+ * СЕКЦИЯ #slide3 - ФОН С ПАРАЛЛАКСОМ
+ * 
+ * Аналогично #slide1:before
+ * - translateZ(-1px) = медленнее
+ * - scale(2) = компенсация размера
+ */
+#slide3:before {
+	background-image: url("https://picsum.photos/980/600");
+	transform: translateZ(-1px) scale(2);
+}
+
+/* 
+ * ФИНАЛЬНАЯ СЕКЦИЯ - БЕЗ ФОНА
+ */
+#slide4 {
+	background: #222;
+}

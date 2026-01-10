@@ -1,0 +1,2 @@
+export { ParallaxPage } from "./ParallaxPage";
+
