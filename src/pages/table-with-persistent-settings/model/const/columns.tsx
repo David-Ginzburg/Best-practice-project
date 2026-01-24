@@ -2,6 +2,9 @@ import { type ColumnDef } from '@tanstack/react-table'
 import type { TableWithPersistentSettingsItem } from '../types/filter-item'
 import { TABLE_WITH_PERSISTENT_SETTINGS_STATUS_CONFIG } from './status-options'
 
+export const TABLE_WITH_PERSISTENT_SETTINGS_COLUMNS_STORAGE_NAME = 'table-with-persistent-settings-columns-settings'
+export const TABLE_WITH_PERSISTENT_SETTINGS_COLUMNS_STORAGE_VERSION = 1
+
 export const tableWithPersistentSettingsColumns: ColumnDef<TableWithPersistentSettingsItem>[] = [
 	{
 		accessorKey: 'id',
