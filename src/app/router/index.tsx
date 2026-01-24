@@ -22,6 +22,10 @@ const ParallaxPage = lazy(() =>
 	import("@/pages/parallax").then((module) => ({ default: module.ParallaxPage }))
 );
 
+const TableWithPersistentSettingsPage = lazy(() =>
+	import("@/pages/table-with-persistent-settings").then((module) => ({ default: module.TableWithPersistentSettingsPage }))
+);
+
 export const router = createBrowserRouter([
 	{
 		element: <Layout />,
@@ -46,6 +50,10 @@ export const router = createBrowserRouter([
 			{
 				path: PATHS.parallax,
 				element: <ParallaxPage />,
+			},
+			{
+				path: PATHS.tableWithPersistentSettings,
+				element: <TableWithPersistentSettingsPage />,
 			},
 		],
 	},

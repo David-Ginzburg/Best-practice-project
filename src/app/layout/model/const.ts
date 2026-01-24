@@ -1,4 +1,4 @@
-import { ListTodo, Plus, FileEdit, Layers } from "lucide-react";
+import { ListTodo, Plus, FileEdit, Layers, Table } from "lucide-react";
 import { PATHS } from "@/shared/paths";
 
 export const menuItems = [
@@ -21,5 +21,10 @@ export const menuItems = [
 		title: "Parallax Effect",
 		url: PATHS.parallax,
 		icon: Layers,
+	},
+	{
+		title: "Table with Persistent Settings",
+		url: PATHS.tableWithPersistentSettings,
+		icon: Table,
 	},
 ];

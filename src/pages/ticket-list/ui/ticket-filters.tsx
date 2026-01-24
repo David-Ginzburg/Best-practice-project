@@ -1,6 +1,9 @@
 import { Field, FieldContent, FieldLabel } from "@/shared/shadcn/ui/field";
 import { Input } from "@/shared/shadcn/ui/input";
 import type { TicketStatus, TicketPriority } from "@/entities/ticket";
+import { STATUS_CONFIG } from "@/entities/ticket/model/status-config";
+import { PRIORITY_CONFIG } from "@/entities/ticket/model/priority-config";
+import { TICKET_STATUSES, TICKET_PRIORITIES } from "@/entities/ticket/model/const";
 
 interface TicketFiltersProps {
 	searchQuery: string;
@@ -43,10 +46,11 @@ export const TicketFilters = ({
 							onChange={(e) => onStatusChange(e.target.value as TicketStatus | "all")}
 						>
 							<option value="all">All statuses</option>
-							<option value="open">Open</option>
-							<option value="in_progress">In Progress</option>
-							<option value="resolved">Resolved</option>
-							<option value="closed">Closed</option>
+							{TICKET_STATUSES.map((status) => (
+								<option key={status} value={status}>
+									{STATUS_CONFIG[status].label}
+								</option>
+							))}
 						</select>
 					</FieldContent>
 				</Field>
@@ -60,10 +64,11 @@ export const TicketFilters = ({
 							onChange={(e) => onPriorityChange(e.target.value as TicketPriority | "all")}
 						>
 							<option value="all">All priorities</option>
-							<option value="low">Low</option>
-							<option value="medium">Medium</option>
-							<option value="high">High</option>
-							<option value="urgent">Urgent</option>
+							{TICKET_PRIORITIES.map((priority) => (
+								<option key={priority} value={priority}>
+									{PRIORITY_CONFIG[priority].label}
+								</option>
+							))}
 						</select>
 					</FieldContent>
 				</Field>

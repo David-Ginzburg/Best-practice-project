@@ -8,6 +8,7 @@ export const PATHS = {
 	createTicket: "/create-ticket",
 	createCustomTicket: "/create-custom-ticket",
 	parallax: "/parallax",
+	tableWithPersistentSettings: "/table-with-persistent-settings",
 } as const;
 
 export type Path = (typeof PATHS)[keyof typeof PATHS];
