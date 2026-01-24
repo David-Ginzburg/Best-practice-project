@@ -1,5 +1,6 @@
 import { useTableWithPersistentSettingsList } from './model'
 import { useTableWithPersistentSettingsSorting } from './model/hooks/use-table-with-persistent-settings-sorting'
+import { useInfinityScroll } from './model/hooks/use-infinity-scroll'
 import { useSearchParamsPagination } from '@/shared/query-params/use-search-params-pagination'
 import { useTableWithPersistentSettingsQueryParamsConfig } from './model/hooks/use-table-with-persistent-settings-query-params-config'
 import { tableWithPersistentSettingsColumns } from './model/const/columns'
@@ -15,6 +16,17 @@ export const TableWithPersistentSettingsPage = () => {
 	const { data, filteredCount, isLoading } = useTableWithPersistentSettingsList()
 	const { sortingState, onSortingChange } = useTableWithPersistentSettingsSorting()
 	const queryParamsConfig = useTableWithPersistentSettingsQueryParamsConfig()
+
+	// Infinity scroll hook
+	const {
+		data: infinityScrollData,
+		handleLoadMore,
+		isLoadingMore,
+		hasMore,
+	} = useInfinityScroll()
+
+	// Use infinity scroll for testing (comment out paginationConfig to test infinity scroll)
+	const enableInfinityScroll = false
 	
 	const { onChange, page, pageSize } = useSearchParamsPagination({
 		config: queryParamsConfig,
@@ -40,7 +52,7 @@ export const TableWithPersistentSettingsPage = () => {
 		<div className="container mx-auto py-8 px-4">
 			<TypographyH1 className="mb-6">Table with persistent settings</TypographyH1>
 			<TableWithPersistentSettings
-				data={data}
+				data={enableInfinityScroll ? infinityScrollData : data}
 				columns={tableWithPersistentSettingsColumns}
 				sortConfig={{
 					sortingState,
@@ -50,12 +62,17 @@ export const TableWithPersistentSettingsPage = () => {
 					storageName: STORAGE_NAME,
 					storageVersion: STORAGE_VERSION,
 				}}
-				paginationConfig={{
+				paginationConfig={!enableInfinityScroll ? {
 					totalCount: filteredCount,
 					onPageChange: handlePageChange,
 					currentPage,
 					pageSize: currentPageSize,
-				}}
+				} : undefined}
+				infinityScrollConfig={enableInfinityScroll ? {
+					onLoadMore: handleLoadMore,
+					isLoadingMore: isLoadingMore,
+					hasMore: hasMore,
+				} : undefined}
 				isLoading={isLoading}
 				filtersSlot={filtersSlot}
 			/>

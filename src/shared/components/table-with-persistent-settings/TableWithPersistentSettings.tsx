@@ -11,6 +11,7 @@ import { useTableColumns } from './hooks/use-table-columns'
 import { TableHeaderComponent } from './components/table-header'
 import { TableBodyComponent } from './components/table-body'
 import { TablePagination } from './components/pagination'
+import { InfinityScrollTrigger } from './components/infinity-scroll-trigger'
 import { ColumnsSettings } from './components/columns-settings'
 import { generateDefaultColumnConfigs, generateColumnLabels } from './utils/column-utils'
 
@@ -20,6 +21,7 @@ export const TableWithPersistentSettings = <TData,>({
 	sortConfig,
 	storeConfig,
 	paginationConfig,
+	infinityScrollConfig,
 	isLoading = false,
 	filtersSlot,
 }: TableWithPersistentSettingsConfig<TData>) => {
@@ -70,19 +72,17 @@ export const TableWithPersistentSettings = <TData,>({
 
 	return (
 		<>
-			{/* Filters slot - always mounted */}
-			{filtersSlot && (
-				<div className="mb-6 space-y-4">
-					{filtersSlot}
-					<div className="flex justify-end">
-						<ColumnsSettings
-							columnConfigs={sortedColumnConfigs}
-							columnLabels={columnLabels}
-							store={store}
-						/>
-					</div>
+			{/* Filters slot */}
+			<div className="mb-6 space-y-4">
+				{filtersSlot}
+				<div className="flex justify-end">
+					<ColumnsSettings
+						columnConfigs={sortedColumnConfigs}
+						columnLabels={columnLabels}
+						store={store}
+					/>
 				</div>
-			)}
+			</div>
 
 			{/* Table */}
 			{isLoading ? (
@@ -101,12 +101,21 @@ export const TableWithPersistentSettings = <TData,>({
 			)}
 
 			{/* Pagination */}
-			{paginationConfig && !isLoading && (
+			{paginationConfig && !isLoading && !infinityScrollConfig && (
 				<TablePagination
 					totalCount={paginationConfig.totalCount}
 					currentPage={paginationConfig.currentPage}
 					pageSize={paginationConfig.pageSize}
 					onPageChange={paginationConfig.onPageChange}
+				/>
+			)}
+
+			{/* Infinity Scroll */}
+			{infinityScrollConfig && !isLoading && (
+				<InfinityScrollTrigger
+					onLoadMore={infinityScrollConfig.onLoadMore}
+					isLoadingMore={infinityScrollConfig.isLoadingMore}
+					hasMore={infinityScrollConfig.hasMore}
 				/>
 			)}
 		</>

@@ -18,6 +18,12 @@ export interface PaginationConfig {
 	pageSize: number
 }
 
+export interface InfinityScrollConfig {
+	onLoadMore: () => void | Promise<void>
+	isLoadingMore?: boolean
+	hasMore?: boolean
+}
+
 export interface TableWithPersistentSettingsConfig<TData> {
 	// Data and columns
 	data: TData[]
@@ -29,8 +35,9 @@ export interface TableWithPersistentSettingsConfig<TData> {
 	// Storage settings
 	storeConfig: StoreConfig
 	
-	// Pagination
+	// Pagination or Infinity Scroll (mutually exclusive)
 	paginationConfig?: PaginationConfig
+	infinityScrollConfig?: InfinityScrollConfig
 	
 	// UI
 	isLoading?: boolean
