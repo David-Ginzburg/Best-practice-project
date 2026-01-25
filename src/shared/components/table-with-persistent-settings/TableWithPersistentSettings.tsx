@@ -62,7 +62,7 @@ export const TableWithPersistentSettings = <TData,>({
 	const { columns: columnConfigs } = store
 
 	// Get filtered and sorted columns
-	const { columns, columnConfigs: sortedColumnConfigs } = useTableColumns({
+	const { columns, sortedColumnConfigs } = useTableColumns({
 		allColumns,
 		columnConfigs,
 	})
