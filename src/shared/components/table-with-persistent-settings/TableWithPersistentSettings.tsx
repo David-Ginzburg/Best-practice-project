@@ -19,6 +19,7 @@ export const TableWithPersistentSettings = <TData,>({
 	data,
 	columns: allColumns,
 	sortConfig,
+	store: providedStore,
 	storeConfig,
 	paginationConfig,
 	infinityScrollConfig,
@@ -36,19 +37,28 @@ export const TableWithPersistentSettings = <TData,>({
 		[allColumns]
 	)
 
-	// Create store hook once and reuse it
+	// Create store hook once and reuse it if store is not provided
 	// Store will be recreated if storeConfig or defaultColumnConfigs change
 	const useTableColumnsSettingsStore = useMemo(
-		() =>
-			createColumnsSettingsStore({
+		() => {
+			if (providedStore) return null
+			return createColumnsSettingsStore({
 				storageName: storeConfig.storageName,
 				storageVersion: storeConfig.storageVersion,
 				defaultColumns: defaultColumnConfigs,
-			}),
-		[storeConfig.storageName, storeConfig.storageVersion, defaultColumnConfigs]
+			})
+		},
+		[providedStore, storeConfig, defaultColumnConfigs]
 	)
 
-	const store = useTableColumnsSettingsStore()
+	// Use provided store or create new one
+	const createdStore = useTableColumnsSettingsStore?.()
+	const store = providedStore ?? createdStore
+
+	if (!store) {
+		throw new Error('Store is not available')
+	}
+
 	const { columns: columnConfigs } = store
 
 	// Get filtered and sorted columns

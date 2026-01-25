@@ -1,5 +1,6 @@
 import { type ColumnDef, type SortingState } from '@tanstack/react-table'
 import type { ReactNode } from 'react'
+import type { ColumnsSettingsStore } from '@/shared/store/columns-settings-store'
 
 export interface StoreConfig {
 	storageName: string
@@ -24,16 +25,13 @@ export interface InfinityScrollConfig {
 	hasMore?: boolean
 }
 
-export interface TableWithPersistentSettingsConfig<TData> {
+type TableWithPersistentSettingsConfigBase<TData> = {
 	// Data and columns
 	data: TData[]
 	columns: ColumnDef<TData>[]
 	
 	// Sorting
 	sortConfig?: SortConfig
-	
-	// Storage settings
-	storeConfig: StoreConfig
 	
 	// Pagination or Infinity Scroll (mutually exclusive)
 	paginationConfig?: PaginationConfig
@@ -45,3 +43,17 @@ export interface TableWithPersistentSettingsConfig<TData> {
 	// Slots
 	filtersSlot?: ReactNode
 }
+
+type TableWithPersistentSettingsConfigWithStore<TData> = TableWithPersistentSettingsConfigBase<TData> & {
+	store: ColumnsSettingsStore
+	storeConfig?: never
+}
+
+type TableWithPersistentSettingsConfigWithStoreConfig<TData> = TableWithPersistentSettingsConfigBase<TData> & {
+	store?: never
+	storeConfig: StoreConfig
+}
+
+export type TableWithPersistentSettingsConfig<TData> = 
+	| TableWithPersistentSettingsConfigWithStore<TData>
+	| TableWithPersistentSettingsConfigWithStoreConfig<TData>
