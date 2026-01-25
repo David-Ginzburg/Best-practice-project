@@ -1,4 +1,11 @@
-export type TableWithPersistentSettingsStatus = 'active' | 'paused' | 'finished' | 'draft'
+export const TABLE_WITH_PERSISTENT_SETTINGS_STATUSES = {
+	active: 'active',
+	paused: 'paused',
+	finished: 'finished',
+	draft: 'draft',
+} as const
+
+export type TableWithPersistentSettingsStatus = typeof TABLE_WITH_PERSISTENT_SETTINGS_STATUSES[keyof typeof TABLE_WITH_PERSISTENT_SETTINGS_STATUSES]
 
 export const TABLE_WITH_PERSISTENT_SETTINGS_STATUS_CONFIG: Record<
 	TableWithPersistentSettingsStatus,

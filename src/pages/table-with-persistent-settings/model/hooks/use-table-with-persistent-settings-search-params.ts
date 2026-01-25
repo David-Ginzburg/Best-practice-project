@@ -1,11 +1,9 @@
 import { useSearchParameters } from '@/shared/query-params'
-import { useTableWithPersistentSettingsQueryParamsConfig } from './use-table-with-persistent-settings-query-params-config'
+import { tableWithPersistentSettingsQueryParamsConfig } from '../const/query-params'
 
-export const useTableWithPersistentSettingsSearchParams = () => {
-	const queryParamsConfig = useTableWithPersistentSettingsQueryParamsConfig()
-	
+export const useTableWithPersistentSettingsSearchParams = () => {	
 	return useSearchParameters(
-		queryParamsConfig,
+		tableWithPersistentSettingsQueryParamsConfig,
 		{
 			pageKey: 'page',
 		}

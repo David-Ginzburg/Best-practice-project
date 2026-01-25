@@ -1,19 +1,11 @@
 import type { ColumnConfigItem } from '@/shared/store/columns-settings-store'
 import { tableWithPersistentSettingsColumns } from '../const/columns'
-import { generateDefaultColumnConfigs as generateDefaultColumnConfigsShared, generateColumnLabels as generateColumnLabelsShared } from '@/shared/components/table-with-persistent-settings/utils/column-utils'
+import { generateColumnLabels, generateDefaultColumnConfigs } from '@/shared/components/table-with-persistent-settings'
 
-/**
- * Generate default column configs from tableWithPersistentSettingsColumns
- * @deprecated Use generateDefaultColumnConfigs from shared/utils/column-utils instead
- */
 export const getDefaultColumnConfigs = (): ColumnConfigItem[] => {
-	return generateDefaultColumnConfigsShared(tableWithPersistentSettingsColumns)
+	return generateDefaultColumnConfigs(tableWithPersistentSettingsColumns)
 }
 
-/**
- * Generate column labels map from tableWithPersistentSettingsColumns
- * @deprecated Use generateColumnLabels from shared/utils/column-utils instead
- */
 export const getColumnLabels = (): Record<string, string> => {
-	return generateColumnLabelsShared(tableWithPersistentSettingsColumns)
+	return generateColumnLabels(tableWithPersistentSettingsColumns)
 }

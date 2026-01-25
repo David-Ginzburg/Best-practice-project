@@ -2,17 +2,16 @@ import { useTableWithPersistentSettingsList } from './model'
 import { useTableWithPersistentSettingsSorting } from './model/hooks/use-table-with-persistent-settings-sorting'
 import { useInfinityScroll } from './model/hooks/use-infinity-scroll'
 import { useSearchParamsPagination } from '@/shared/query-params/use-search-params-pagination'
-import { useTableWithPersistentSettingsQueryParamsConfig } from './model/hooks/use-table-with-persistent-settings-query-params-config'
 import { TABLE_WITH_PERSISTENT_SETTINGS_COLUMNS_STORAGE_NAME, TABLE_WITH_PERSISTENT_SETTINGS_COLUMNS_STORAGE_VERSION, tableWithPersistentSettingsColumns } from './model/const/columns'
 import { SearchFilter } from './ui/search-filter'
 import { StatusFilter } from './ui/status-filter'
 import { TableWithPersistentSettings } from '@/shared/components/table-with-persistent-settings'
 import { TypographyH1 } from '@/shared/components/typography'
+import { tableWithPersistentSettingsQueryParamsConfig } from './model/const/query-params'
 
 export const TableWithPersistentSettingsPage = () => {
 	const { data, filteredCount, isLoading } = useTableWithPersistentSettingsList()
 	const { sortingState, onSortingChange } = useTableWithPersistentSettingsSorting()
-	const queryParamsConfig = useTableWithPersistentSettingsQueryParamsConfig()
 
 	// Infinity scroll hook
 	const {
@@ -26,7 +25,7 @@ export const TableWithPersistentSettingsPage = () => {
 	const enableInfinityScroll = false
 	
 	const { onChange, page, pageSize } = useSearchParamsPagination({
-		config: queryParamsConfig,
+		config: tableWithPersistentSettingsQueryParamsConfig,
 		keys: { pageKey: 'page', pageSizeKey: 'page_size' },
 	})
 
