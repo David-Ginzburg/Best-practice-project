@@ -30,7 +30,7 @@ export interface TableWithPersistentSettingsConfig<TData> {
 	columns: ColumnDef<TData>[]
 	
 	// Sorting
-	sortConfig: SortConfig
+	sortConfig?: SortConfig
 	
 	// Storage settings
 	storeConfig: StoreConfig

@@ -62,12 +62,14 @@ export const TableWithPersistentSettings = <TData,>({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
-		getSortedRowModel: getSortedRowModel(),
-		state: {
-			sorting: sortConfig.sortingState,
-		},
-		manualSorting: true,
-		onSortingChange: sortConfig.onSortingChange,
+		...(sortConfig && {
+			getSortedRowModel: getSortedRowModel(),
+			state: {
+				sorting: sortConfig.sortingState,
+			},
+			manualSorting: true,
+			onSortingChange: sortConfig.onSortingChange,
+		}),
 	})
 
 	return (
