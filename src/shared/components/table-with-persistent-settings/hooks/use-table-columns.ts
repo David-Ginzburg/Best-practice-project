@@ -42,12 +42,12 @@ export const useTableColumns = <TData>({
 		return columnDefs
 	}, [allColumns, columnConfigs])
 
-	const columnConfigsList = useMemo(() => {
+	const columnSortedConfigsList = useMemo(() => {
 		return columnConfigs.sort((a, b) => a.order - b.order)
 	}, [columnConfigs])
 
 	return {
 		columns,
-		columnConfigs: columnConfigsList,
+		columnConfigs: columnSortedConfigsList,
 	}
 }

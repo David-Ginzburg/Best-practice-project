@@ -21,8 +21,8 @@ export interface PaginationConfig {
 
 export interface InfinityScrollConfig {
 	onLoadMore: () => void | Promise<void>
-	isLoadingMore?: boolean
-	hasMore?: boolean
+	isLoadingMore: boolean
+	hasMore: boolean
 }
 
 type TableWithPersistentSettingsConfigBase<TData> = {
