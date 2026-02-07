@@ -7,6 +7,7 @@
 
 ## Recent Changes
 
+- **Table with Persistent Settings**: Added TanStack Table grouping: state (grouping, expanded) in the same Zustand store with getGroupedRowModel/getExpandedRowModel; group toggle in header (Layers icon), expand/collapse in body; aggregation (sum/mean/uniqueCount) on columns for grouped rows. Table state (column visibility, order, sorting, grouping, expanded) is fully controlled by TanStack Table API and persisted in localStorage.
 - Refactored to page-first approach in Feature-Sliced Design architecture
 - Reorganized ticket-list page structure according to FSD: model/hooks and ui folders
 - All business logic moved to model/hooks, UI components in ui folder
@@ -46,6 +47,14 @@ Page components following page-first approach. Each page contains its own featur
   - `ticket-filters.tsx` - Filters component for search, status, and priority
   - `ticket-table.tsx` - DataTable component using TanStack Table with column configuration
   - `ticket-list-info.tsx` - Information component showing ticket counts
+
+#### Table with Persistent Settings Page (`/src/pages/table-with-persistent-settings/`)
+
+- **TableWithPersistentSettingsPage.tsx** - Page component using shared `TableWithPersistentSettings` with a Zustand-persisted table store.
+- **Model** (`/model/`):
+  - **Store** (`/store/`): `table-settings-store.ts` - Zustand store with persist middleware for `columnVisibility`, `columnOrder`, `sorting`, `grouping`, `expanded`; setters accept TanStack `Updater<T>` (see `functionalUpdate` in shared component).
+  - **Hooks**: `use-table-with-persistent-settings-list.ts` (data + filters from URL), `use-table-settings-sync-url.ts` (sync store sorting ↔ URL `sort_by`/`sort_direction`), `use-search-params-pagination`, `use-infinity-scroll`.
+- **Shared component** `TableWithPersistentSettings`: receives `tableStore` (state + setters), passes them to `useReactTable` as controlled state and handlers for visibility, order, sorting, grouping, expanded. Uses `getGroupedRowModel`, `getExpandedRowModel`; header has group toggle (per column), body renders grouped rows with expand/collapse and aggregated cells. Columns settings UI uses table API. Pagination and infinity scroll are passed as optional config.
 
 #### Parallax Page (`/src/pages/parallax/`)
 

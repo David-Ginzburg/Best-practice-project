@@ -34,7 +34,7 @@ export const getColumnHeader = <TData>(column: ColumnDef<TData>): string => {
  * Generate default column configs from columns
  */
 export const generateDefaultColumnConfigs = <TData>(
-	columns: ColumnDef<TData>[]
+	columns: readonly ColumnDef<TData>[]
 ): ColumnConfigItem[] => {
 	return columns
 		.map((column, index) => {
@@ -53,7 +53,7 @@ export const generateDefaultColumnConfigs = <TData>(
  * Generate column labels map from columns
  */
 export const generateColumnLabels = <TData>(
-	columns: ColumnDef<TData>[]
+	columns: readonly ColumnDef<TData>[]
 ): Record<string, string> => {
 	const labels: Record<string, string> = {}
 	columns.forEach((column) => {

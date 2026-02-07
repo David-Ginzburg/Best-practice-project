@@ -1,5 +1,4 @@
 export { useTableWithPersistentSettingsSearchParams } from './use-table-with-persistent-settings-search-params'
 export { useInfinityScroll } from './use-infinity-scroll'
 export { useTableWithPersistentSettingsList } from './use-table-with-persistent-settings-list'
-export { useTableWithPersistentSettingsColumns } from './use-table-with-persistent-settings-columns'
-export { useTableWithPersistentSettingsSorting } from './use-table-with-persistent-settings-sorting'
+export { useTableSettingsSyncUrl } from './use-table-settings-sync-url'

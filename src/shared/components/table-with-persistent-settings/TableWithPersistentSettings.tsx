@@ -1,118 +1,105 @@
 import { useMemo } from 'react'
 import {
+	type ColumnDef,
 	getCoreRowModel,
 	getSortedRowModel,
+	getGroupedRowModel,
+	getExpandedRowModel,
 	useReactTable,
 } from '@tanstack/react-table'
 import { Table } from '@/shared/shadcn/ui/table'
-import { createColumnsSettingsStore } from '@/shared/store/columns-settings-store'
 import type { TableWithPersistentSettingsConfig } from './types'
-import { useTableColumns } from './hooks/use-table-columns'
 import { TableHeaderComponent } from './components/table-header'
 import { TableBodyComponent } from './components/table-body'
 import { TablePagination } from './components/pagination'
 import { InfinityScrollTrigger } from './components/infinity-scroll-trigger'
 import { ColumnsSettings } from './components/columns-settings'
-import { generateDefaultColumnConfigs, generateColumnLabels } from './utils/column-utils'
+import { generateColumnLabels } from './utils/column-utils'
 
-export const TableWithPersistentSettings = <TData,>({
+export const TableWithPersistentSettings = <
+	TData,
+	TColumns extends readonly ColumnDef<TData>[] = ColumnDef<TData>[],
+>({
 	data,
-	columns: allColumns,
-	sortConfig,
-	store: providedStore,
-	storeConfig,
+	columns,
+	tableStore,
+	columnLock,
 	paginationConfig,
 	infinityScrollConfig,
 	isLoading = false,
 	filtersSlot,
-}: TableWithPersistentSettingsConfig<TData>) => {
-	// Generate default column configs and labels from columns
-	const defaultColumnConfigs = useMemo(
-		() => generateDefaultColumnConfigs(allColumns),
-		[allColumns]
-	)
-
+}: TableWithPersistentSettingsConfig<TData, TColumns>) => {
 	const columnLabels = useMemo(
-		() => generateColumnLabels(allColumns),
-		[allColumns]
+		() =>
+			generateColumnLabels(columns),
+		[columns]
 	)
 
-	// Create store hook once and reuse it if store is not provided
-	// Store will be recreated if storeConfig or defaultColumnConfigs change
-	const useTableColumnsSettingsStore = useMemo(
-		() => {
-			if (providedStore) return null
-			return createColumnsSettingsStore({
-				storageName: storeConfig.storageName,
-				storageVersion: storeConfig.storageVersion,
-				defaultColumns: defaultColumnConfigs,
-			})
-		},
-		[providedStore, storeConfig, defaultColumnConfigs]
-	)
+	const {
+		columnVisibility,
+		setColumnVisibility,
+		columnOrder,
+		setColumnOrder,
+		sorting,
+		setSorting,
+		grouping,
+		setGrouping,
+		expanded,
+		setExpanded,
+	} = tableStore
 
-	// Use provided store or create new one
-	const createdStore = useTableColumnsSettingsStore?.()
-	const store = providedStore ?? createdStore
-
-	if (!store) {
-		throw new Error('Store is not available')
-	}
-
-	const { columns: columnConfigs } = store
-
-	// Get filtered and sorted columns
-	const { columns, sortedColumnConfigs } = useTableColumns({
-		allColumns,
-		columnConfigs,
-	})
-
-	// Create table instance
 	const table = useReactTable({
 		data,
-		columns,
+		columns: columns as unknown as ColumnDef<TData>[],
 		getCoreRowModel: getCoreRowModel(),
-		...(sortConfig && {
-			getSortedRowModel: getSortedRowModel(),
-			state: {
-				sorting: sortConfig.sortingState,
-			},
-			manualSorting: true,
-			onSortingChange: sortConfig.onSortingChange,
-		}),
+		getGroupedRowModel: getGroupedRowModel(),
+		getSortedRowModel: getSortedRowModel(),
+		getExpandedRowModel: getExpandedRowModel(),
+		manualSorting: true,
+		state: {
+			columnVisibility,
+			columnOrder,
+			sorting,
+			grouping,
+			expanded,
+		},
+		onColumnVisibilityChange: setColumnVisibility,
+		onColumnOrderChange: setColumnOrder,
+		onSortingChange: setSorting,
+		onGroupingChange: setGrouping,
+		onExpandedChange: setExpanded,
 	})
 
 	return (
 		<>
-			{/* Filters slot */}
 			<div className="mb-6 space-y-4">
 				{filtersSlot}
 				<div className="flex justify-end">
 					<ColumnsSettings
-						columnConfigs={sortedColumnConfigs}
-						columnLabels={columnLabels}
-						store={store}
-					/>
+					table={table}
+					columnLabels={columnLabels}
+					setColumnOrder={setColumnOrder}
+					columnLock={columnLock}
+				/>
 				</div>
 			</div>
 
-			{/* Table */}
 			{isLoading ? (
 				<div className="mb-6 overflow-hidden rounded-md border">
 					<div className="h-102 w-full animate-pulse bg-muted" />
 				</div>
 			) : (
-				<div
-					className="mb-6 overflow-hidden rounded-md border"
-				>
+				<div className="mb-6 overflow-hidden rounded-md border">
 					<Table>
 						<TableHeaderComponent table={table} />
-						<TableBodyComponent table={table} columnsLength={columns.length} />
+						<TableBodyComponent
+							table={table}
+							columnsLength={columns.length}
+						/>
 					</Table>
 				</div>
 			)}
 
-			{/* Pagination */}
 			{paginationConfig && !isLoading && !infinityScrollConfig && (
 				<TablePagination
 					totalCount={paginationConfig.totalCount}
@@ -122,7 +109,6 @@ export const TableWithPersistentSettings = <TData,>({
 				/>
 			)}
 
-			{/* Infinity Scroll */}
 			{infinityScrollConfig && !isLoading && (
 				<InfinityScrollTrigger
 					onLoadMore={infinityScrollConfig.onLoadMore}

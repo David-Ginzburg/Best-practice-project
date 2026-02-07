@@ -1,19 +1,18 @@
 import { useTableWithPersistentSettingsList } from './model'
-import { useTableWithPersistentSettingsSorting } from './model/hooks/use-table-with-persistent-settings-sorting'
 import { useInfinityScroll } from './model/hooks/use-infinity-scroll'
 import { useSearchParamsPagination } from '@/shared/query-params/use-search-params-pagination'
-import { TABLE_WITH_PERSISTENT_SETTINGS_COLUMNS_STORAGE_NAME, TABLE_WITH_PERSISTENT_SETTINGS_COLUMNS_STORAGE_VERSION, tableWithPersistentSettingsColumns } from './model/const/columns'
+import { useTableSettingsSyncUrl } from './model/hooks/use-table-settings-sync-url'
+import { tableWithPersistentSettingsColumns } from './model/const/columns'
+import { tableWithPersistentSettingsQueryParamsConfig } from './model/const/query-params'
 import { SearchFilter } from './ui/search-filter'
 import { StatusFilter } from './ui/status-filter'
 import { TableWithPersistentSettings } from '@/shared/components/table-with-persistent-settings'
 import { TypographyH1 } from '@/shared/components/typography'
-import { tableWithPersistentSettingsQueryParamsConfig } from './model/const/query-params'
 
 export const TableWithPersistentSettingsPage = () => {
 	const { data, filteredCount, isLoading } = useTableWithPersistentSettingsList()
-	const { sortingState, onSortingChange } = useTableWithPersistentSettingsSorting()
+	const tableStore = useTableSettingsSyncUrl()
 
-	// Infinity scroll hook
 	const {
 		data: infinityScrollData,
 		handleLoadMore,
@@ -21,9 +20,8 @@ export const TableWithPersistentSettingsPage = () => {
 		hasMore,
 	} = useInfinityScroll()
 
-	// Use infinity scroll for testing (comment out paginationConfig to test infinity scroll)
-	const enableInfinityScroll = false
-	
+	const enableInfinityScroll = true
+
 	const { onChange, page, pageSize } = useSearchParamsPagination({
 		config: tableWithPersistentSettingsQueryParamsConfig,
 		keys: { pageKey: 'page', pageSizeKey: 'page_size' },
@@ -36,7 +34,6 @@ export const TableWithPersistentSettingsPage = () => {
 		onChange(newPage, currentPageSize)
 	}
 
-	// Prepare filters slot (without ColumnsSettings, as it's built into the universal component)
 	const filtersSlot = (
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 			<SearchFilter isLoading={isLoading} />
@@ -50,25 +47,27 @@ export const TableWithPersistentSettingsPage = () => {
 			<TableWithPersistentSettings
 				data={enableInfinityScroll ? infinityScrollData : data}
 				columns={tableWithPersistentSettingsColumns}
-				sortConfig={{
-					sortingState,
-					onSortingChange,
+				tableStore={tableStore}
+				columnLock={{
+					visibility: ['id', 'name'],
+					order: ['id'],
 				}}
-				storeConfig={{
-					storageName: TABLE_WITH_PERSISTENT_SETTINGS_COLUMNS_STORAGE_NAME,
-					storageVersion: TABLE_WITH_PERSISTENT_SETTINGS_COLUMNS_STORAGE_VERSION,
-				}}
-				paginationConfig={!enableInfinityScroll ? {
-					totalCount: filteredCount,
-					onPageChange: handlePageChange,
-					currentPage,
-					pageSize: currentPageSize,
-				} : undefined}
-				infinityScrollConfig={enableInfinityScroll ? {
-					onLoadMore: handleLoadMore,
-					isLoadingMore: isLoadingMore,
-					hasMore: hasMore,
-				} : undefined}
+				{...(enableInfinityScroll
+					? {
+							infinityScrollConfig: {
+								onLoadMore: handleLoadMore,
+								isLoadingMore: isLoadingMore,
+								hasMore: hasMore,
+							},
+						}
+					: {
+							paginationConfig: {
+								totalCount: filteredCount,
+								onPageChange: handlePageChange,
+								currentPage,
+								pageSize: currentPageSize,
+							},
+						})}
 				isLoading={isLoading}
 				filtersSlot={filtersSlot}
 			/>
