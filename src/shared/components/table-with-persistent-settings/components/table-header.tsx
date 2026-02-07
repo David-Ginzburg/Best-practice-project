@@ -5,11 +5,18 @@ import { Button } from '@/shared/shadcn/ui/button'
 
 interface TableHeaderComponentProps<TData> {
 	table: TanStackTable<TData>
+	/** When true (e.g. with virtual scroll), header stays visible while scrolling */
+	stickyHeader?: boolean
 }
 
-export const TableHeaderComponent = <TData,>({ table }: TableHeaderComponentProps<TData>) => {
+export const TableHeaderComponent = <TData,>({
+	table,
+	stickyHeader = false,
+}: TableHeaderComponentProps<TData>) => {
 	return (
-		<TableHeader>
+		<TableHeader
+			className={stickyHeader ? 'sticky top-0 z-10 bg-background shadow-sm' : undefined}
+		>
 			{table.getHeaderGroups().map((headerGroup) => (
 				<TableRow key={headerGroup.id}>
 					{headerGroup.headers.map((header) => {
