@@ -25,6 +25,8 @@ export const useTableSettingsSyncUrl = () => {
 	const tableStore = useMemo(() => {
 		const setSortingWithUrl = (updater: Parameters<typeof store.setSorting>[0]) => {
 			store.setSorting(updater)
+
+			// here we are syncing state from store to url
 			const sorting = useTableSettingsStore.getState().sorting
 			if (sorting.length === 0) {
 				setListSearchParams({ sort_by: undefined, sort_direction: undefined })
